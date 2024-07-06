@@ -1,11 +1,11 @@
 package hashmap;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
 
 import java.util.HashSet;
 import java.util.Set;
-import static com.google.common.truth.Truth.assertThat;
+
+import static org.junit.Assert.*;
 
 /** Tests of optional parts of lab 8. */
 public class TestMyHashMapExtra {
@@ -18,13 +18,13 @@ public class TestMyHashMapExtra {
         q.put("a", "a");
         q.put("d", "a");
         q.put("e", "a"); // a b c d e
-        assertThat(q.remove("c")).isNotNull();
-        assertThat(q.remove("f")).isNull();
-        assertThat(q.containsKey("c")).isFalse();
-        assertThat(q.containsKey("a")).isTrue();
-        assertThat(q.containsKey("b")).isTrue();
-        assertThat(q.containsKey("d")).isTrue();
-        assertThat(q.containsKey("e")).isTrue();
+        assertNotNull(q.remove("c"));
+        assertNull(q.remove("f"));
+        assertFalse(q.containsKey("c"));
+        assertTrue(q.containsKey("a"));
+        assertTrue(q.containsKey("b"));
+        assertTrue(q.containsKey("d"));
+        assertTrue(q.containsKey("e"));
     }
 
     /**
@@ -39,20 +39,20 @@ public class TestMyHashMapExtra {
         q.put("a", "a");
         q.put("d", "a");
         q.put("e", "a");                         // a b c d e
-        assertThat(q.remove("e")).isNotNull();      // a b c d
-        assertThat(q.containsKey("a")).isTrue();
-        assertThat(q.containsKey("b")).isTrue();
-        assertThat(q.containsKey("c")).isTrue();
-        assertThat(q.containsKey("d")).isTrue();
-        assertThat(q.remove("c")).isNotNull();     // a b d
-        assertThat(q.containsKey("a")).isTrue();
-        assertThat(q.containsKey("b")).isTrue();
-        assertThat(q.containsKey("d")).isTrue();
-        q.put("f", "a");                         // a b d f
-        assertThat(q.remove("d")).isNotNull();      // a b f
-        assertThat(q.containsKey("a")).isTrue();
-        assertThat(q.containsKey("b")).isTrue();
-        assertThat(q.containsKey("f")).isTrue();
+        assertNotNull(q.remove("e"));             // a b c d
+        assertTrue(q.containsKey("a"));
+        assertTrue(q.containsKey("b"));
+        assertTrue(q.containsKey("c"));
+        assertTrue(q.containsKey("d"));
+        assertNotNull(q.remove("c"));            // a b d
+        assertTrue(q.containsKey("a"));
+        assertTrue(q.containsKey("b"));
+        assertTrue(q.containsKey("d"));
+        q.put("f", "a");                        // a b d f
+        assertNotNull(q.remove("d"));            // a b f
+        assertTrue(q.containsKey("a"));
+        assertTrue(q.containsKey("b"));
+        assertTrue(q.containsKey("f"));
     }
 
     @Test
@@ -68,7 +68,6 @@ public class TestMyHashMapExtra {
         }
         assertEquals(455, b.size()); //keys are there
         Set<String> keySet = b.keySet();
-        assertThat(values).containsExactlyElementsIn(keySet);
-        assertThat(keySet).containsExactlyElementsIn(values);
+        assertEquals(values, keySet); // directly compare sets
     }
 }

@@ -50,6 +50,10 @@ public class RedBlackTree<T extends Comparable<T>> {
      * @param node
      */
     void flipColors(RBTreeNode<T> node) {
+        if (node == null) return;
+        node.isBlack = !node.isBlack;
+        flipColors(node.left);
+        flipColors(node.right);
         // TODO: YOUR CODE HERE
     }
 
@@ -62,7 +66,14 @@ public class RedBlackTree<T extends Comparable<T>> {
      */
     RBTreeNode<T> rotateRight(RBTreeNode<T> node) {
         // TODO: YOUR CODE HERE
-        return null;
+        assert node != null;
+        if (node.left == null) throw new IllegalArgumentException("node.left should not be null");
+
+        RBTreeNode<T> newHead = node.left;
+        node.left = newHead.right;
+        newHead.right = node;
+        node.left = null;
+        return newHead;
     }
 
     /**
@@ -74,7 +85,13 @@ public class RedBlackTree<T extends Comparable<T>> {
      */
     RBTreeNode<T> rotateLeft(RBTreeNode<T> node) {
         // TODO: YOUR CODE HERE
-        return null;
+        assert node != null;
+        if (node.right == null) throw new IllegalArgumentException("node.right should not be null");
+
+        RBTreeNode<T> newHead = node.right;
+        node.right = newHead.left;
+        newHead.left = node;
+        return newHead;
     }
 
     /**
@@ -106,16 +123,109 @@ public class RedBlackTree<T extends Comparable<T>> {
      */
     private RBTreeNode<T> insert(RBTreeNode<T> node, T item) {
         // TODO: Insert (return) new red leaf node.
-
+        RBTreeNode<T> rbTreeNode = insertBST(node, item); // new root node
         // TODO: Handle normal binary search tree insertion.
 
         // TODO: Rotate left operation
+        RBTreeNode<T> grandParent = findGrandParent(rbTreeNode, item);
+        RBTreeNode<T> uncle = findUncle(rbTreeNode, item);
+        RBTreeNode<T> parent = findParent(rbTreeNode, item);
 
+        if (uncle == null || uncle.isBlack) {
+            if (parent != null && item.compareTo(parent.item) > 0) {
+                rotateLeft(parent);
+            } else if (parent != null && item.compareTo(parent.item) < 0 && grandParent != null) {
+                rotateRight(grandParent);
+                flipColors(grandParent);
+            }
+        } else {
+            flipColors(grandParent);
+        }
         // TODO: Rotate right operation
-
+//        rotateRight(node);
         // TODO: Color flip
-
-        return null; //fix this return statement
+//        flipColors(node);
+        return rbTreeNode; //fix this return statement
     }
+
+    /**
+     * all the node imputed should be red
+     * @param node target node to add the item
+     * @param item to be added
+     * @return RedBlackTree.RBTreeNode<T>
+     * on 7/3/24 6:34 PM
+     */
+    private RBTreeNode<T> insertBST(RBTreeNode<T> node, T item) {
+        if (node == null) {
+            return new RBTreeNode<>(false, item);
+        }
+        T currentItem = node.item;
+
+        if (currentItem.compareTo(item) < 0) {
+            node.right = insertBST(node.right, item);
+        } else if (currentItem.compareTo(item) > 0) {
+            node.left = insertBST(node.left, item);
+        }
+        return node;
+    }
+
+    /**
+     * find the uncle node of item
+     * @param node  target tree
+     * @param item  target node as inputted
+     * @return RedBlackTree.RBTreeNode<T>
+     * on 7/3/24 7:13 PM
+     */
+    private RBTreeNode<T> findUncle(RBTreeNode<T> node, T item) {
+        // findUncle is not supported
+        if (node == null || node.right == null && node.left == null) {
+            return null;
+        }
+
+        // record the parent node and the grandparent node
+        RBTreeNode<T> grandParent = findGrandParent(node, item);
+        if (grandParent == null) return null;
+        return getUncle(grandParent, item);
+    }
+
+    private RBTreeNode<T> findParent(RBTreeNode<T> node, T item) {
+        // findUncle is not supported
+        if (node == null || node.right == null && node.left == null) {
+            return null;
+        }
+
+        RBTreeNode<T> left = node.left;
+        RBTreeNode<T> right = node.right;
+        if (left == null || right == null) return null;
+        if (left.left.item.equals(item) || left.right.item.equals(item)) {
+            return left;
+        } else {
+            return right;
+        }
+    }
+
+    private RBTreeNode<T> getUncle(RBTreeNode<T> node, T item) {
+        RBTreeNode<T> left = node.left;
+        RBTreeNode<T> right = node.right;
+        if (left == null && right != null || left != null && right == null) return null;
+        if (left.left.item.equals(item) || left.right.item.equals(item)) {
+            return right;
+        } else {
+            return left;
+        }
+    }
+
+    private RBTreeNode<T> findGrandParent(RBTreeNode<T> node, T item) {
+        if (node.left != null && node.left.right != null && node.left.right.item.equals(item)
+        || node.left != null && node.left.left != null && node.left.left.item.equals(item)
+        || node.right != null && node.right.left != null && node.right.left.item.equals(item)
+        || node.right != null && node.right.right != null && node.right.right.item.equals(item)) {
+            return node;
+        }
+        if (node.left != null) return findUncle(node.left, item);
+        if (node.right != null) return findUncle(node.right, item);
+        return null;
+    }
+
 
 }

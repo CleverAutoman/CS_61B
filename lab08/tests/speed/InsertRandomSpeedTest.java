@@ -2,7 +2,6 @@ package speed;
 
 import java.util.HashMap;
 import java.util.Scanner;
-import edu.princeton.cs.algs4.Stopwatch;
 
 import hashmap.Map61B;
 import hashmap.ULLMap;
@@ -15,16 +14,12 @@ import hashmap.MyHashMap;
 public class InsertRandomSpeedTest {
     /**
      * Requests user input and performs tests of three different set
-     * implementations. ARGS is unused. 
+     * implementations. ARGS is unused.
      */
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 
-        System.out.println("""
-
-                 This program inserts random Strings of length L
-                 into different types of maps as <String, Integer> pairs.
-                """);
+        System.out.println(" This program inserts random Strings of length L into different types of maps as <String, Integer> pairs. ");
         System.out.print("What would you like L to be?: ");
         int L = waitForPositiveInt(input);
 
@@ -53,13 +48,14 @@ public class InsertRandomSpeedTest {
      * hashmap.Map61B 61bMap.
      */
     public static double insertRandom(Map61B<String, Integer> map61B, int N, int L) {
-        Stopwatch sw = new Stopwatch();
+        long startTime = System.nanoTime();  // 开始计时
         String s;
         for (int i = 0; i < N; i++) {
             s = StringUtils.randomString(L);
             map61B.put(s, i);
         }
-        return sw.elapsedTime();
+        long endTime = System.nanoTime();  // 结束计时
+        return (endTime - startTime) / 1e9;  // 返回秒数
     }
 
     /**
@@ -67,15 +63,15 @@ public class InsertRandomSpeedTest {
      * HashMap hashMap.
      */
     public static double insertRandom(HashMap<String, Integer> hashMap, int N, int L) {
-        Stopwatch sw = new Stopwatch();
+        long startTime = System.nanoTime();  // 开始计时
         String s;
         for (int i = 0; i < N; i++) {
             s = StringUtils.randomString(L);
             hashMap.put(s, i);
         }
-        return sw.elapsedTime();
+        long endTime = System.nanoTime();  // 结束计时
+        return (endTime - startTime) / 1e9;  // 返回秒数
     }
-
     /**
      * Attempts to insert N random strings of length L into map,
      * Prints time of the N insert calls, otherwise

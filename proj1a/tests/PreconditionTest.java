@@ -5,10 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -16,12 +13,13 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 /** Tests that the LinkedListDeque61B class is structured correctly.
  *  @author Noah Adhikari */
-public class PreconditionTest {
+public class PreconditionTest implements Iterable<T>{
 
     /** Returns the inner class of lld. Asserts there is exactly one inner class. */
     private static Class<?> getLldInnerClass() {
         Class<?>[] innerClasses = LinkedListDeque61B.class.getDeclaredClasses();
         assertWithMessage("LinkedListDeque61B should have exactly one inner class").that(innerClasses).hasLength(1);
+
         return innerClasses[0];
     }
 
@@ -114,5 +112,24 @@ public class PreconditionTest {
         Constructor<?>[] ctors = LinkedListDeque61B.class.getConstructors();
         assertWithMessage("Found more than one constructor in LinkedListDeque61B").that(ctors).hasLength(1);
         assertWithMessage("LinkedListDeque61B constructor has more than zero arguments").that(ctors[0].getParameterCount()).isEqualTo(0);
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new PrimitiveIterator<>() {
+            @Override
+            public void forEachRemaining(Object action) {
+            }
+
+            @Override
+            public boolean hasNext() {
+                return false;
+            }
+
+            @Override
+            public T next() {
+                return null;
+            }
+        };
     }
 }

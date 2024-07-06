@@ -1,6 +1,5 @@
 package speed;
 
-import edu.princeton.cs.algs4.Stopwatch;
 import java.util.*;
 
 import hashmap.Map61B;
@@ -19,11 +18,7 @@ public class BucketsSpeedTest {
         int N;
         Scanner input = new Scanner(System.in);
 
-        System.out.println("""
-
-                 This program inserts random Strings of length L
-                 into different types of maps as <String, Integer> pairs.
-                """);
+        System.out.println(" This program inserts random Strings of length L into different types of maps as <String, Integer> pairs.");
         System.out.print("What would you like L to be?: ");
         int L = waitForPositiveInt(input);
 
@@ -57,13 +52,14 @@ public class BucketsSpeedTest {
      * hashmap.Map61B 61bMap.
      */
     public static double insertRandom(Map61B<String, Integer> map61B, int N, int L) {
-        Stopwatch sw = new Stopwatch();
+        long startTime = System.currentTimeMillis();  // 开始计时，使用毫秒级时间
         String s;
         for (int i = 0; i < N; i++) {
             s = StringUtils.randomString(L);
             map61B.put(s, i);
         }
-        return sw.elapsedTime();
+        long endTime = System.currentTimeMillis();  // 结束计时
+        return (endTime - startTime) / 1000.0;  // 返回秒数
     }
 
     /**

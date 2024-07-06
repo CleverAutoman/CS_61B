@@ -2,11 +2,12 @@ package speed;
 
 import java.util.HashMap;
 import java.util.Scanner;
-import edu.princeton.cs.algs4.Stopwatch;
+//import edu.princeton.cs.algs4.Stopwatch;
 
 import hashmap.Map61B;
 import hashmap.ULLMap;
 import hashmap.MyHashMap;
+import org.junit.rules.Stopwatch;
 
 import static speed.InsertRandomSpeedTest.waitForPositiveInt;
 
@@ -53,26 +54,27 @@ public class InsertInOrderSpeedTest {
      * makes use of speed.StringUtils.nextString(String s)
      */
     public static double insertInOrder(Map61B<String, Integer> map61B, int N) {
-        Stopwatch sw = new Stopwatch();
+        long startTime = System.nanoTime();  // 使用 System.nanoTime() 开始计时
         String s = "cat";
         for (int i = 0; i < N; i++) {
             s = StringUtils.nextString(s);
             map61B.put(s, i);
         }
-        return sw.elapsedTime();
+        long endTime = System.nanoTime();  // 使用 System.nanoTime() 结束计时
+        return (endTime - startTime) / 1e9;  // 计算耗时，转换为秒
     }
-
     /**
      * Returns time needed to put N strings into HashMap in increasing order.
      */
     public static double insertInOrder(HashMap<String, Integer> ts, int N) {
-        Stopwatch sw = new Stopwatch();
+        long startTime = System.nanoTime();  // 使用 System.nanoTime() 开始计时
         String s = "cat";
         for (int i = 0; i < N; i++) {
             s = StringUtils.nextString(s);
             ts.put(s, i);
         }
-        return sw.elapsedTime();
+        long endTime = System.nanoTime();  // 使用 System.nanoTime() 结束计时
+        return (endTime - startTime) / 1e9;  // 计算耗时，转换为秒
     }
 
     /**

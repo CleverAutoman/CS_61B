@@ -1,7 +1,6 @@
 import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.Scanner;
-import edu.princeton.cs.algs4.Stopwatch;
 
 /** Performs a timing test on three different set implementations.
  *  @author Josh Hug
@@ -15,10 +14,10 @@ public class InsertRandomSpeedTest {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 
-        System.out.println("This program inserts random "
-                + "Strings of length L "
-                + "into different types of maps "
-                + "as <String, Integer> pairs.");
+        System.out.println("This program inserts random " +
+                "Strings of length L " +
+                "into different types of maps " +
+                "as <String, Integer> pairs.");
         System.out.print("Please enter desired length of each string: ");
         int L = waitForPositiveInt(input);
 
@@ -40,37 +39,40 @@ public class InsertRandomSpeedTest {
     /** Returns time needed to put N random strings of length L into the
      * Map61B 61bMap. */
     public static double insertRandom(Map61B<String, Integer> map61B, int N, int L) {
-        Stopwatch sw = new Stopwatch();
+        long startTime = System.nanoTime();
         String s;
         for (int i = 0; i < N; i++) {
             s = StringUtils.randomString(L);
             map61B.put(s, i);
         }
-        return sw.elapsedTime();
+        long endTime = System.nanoTime();
+        return (endTime - startTime) / 1_000_000_000.0; // convert to seconds
     }
 
     /** Returns time needed to put N random strings of length L into the
      * given TreeMap. */
     public static double insertRandom(TreeMap<String, Integer> treeMap, int N, int L) {
-        Stopwatch sw = new Stopwatch();
+        long startTime = System.nanoTime();
         String s;
         for (int i = 0; i < N; i++) {
             s = StringUtils.randomString(L);
             treeMap.put(s, i);
         }
-        return sw.elapsedTime();
+        long endTime = System.nanoTime();
+        return (endTime - startTime) / 1_000_000_000.0; // convert to seconds
     }
 
     /** Returns time needed to put N random strings of length L into the
      * HashMap treeMap. */
     public static double insertRandom(HashMap<String, Integer> treeMap, int N, int L) {
-        Stopwatch sw = new Stopwatch();
+        long startTime = System.nanoTime();
         String s;
         for (int i = 0; i < N; i++) {
             s = StringUtils.randomString(L);
             treeMap.put(s, i);
         }
-        return sw.elapsedTime();
+        long endTime = System.nanoTime();
+        return (endTime - startTime) / 1_000_000_000.0; // convert to seconds
     }
 
     /**
@@ -81,7 +83,7 @@ public class InsertRandomSpeedTest {
     public static void timeRandomMap61B(Map61B<String, Integer> map, int N, int L) {
         try {
             double mapTime = insertRandom(map, N, L);
-            System.out.printf(map.getClass() + ": %.2f sec\n", mapTime);
+            System.out.printf(map.getClass().getSimpleName() + ": %.2f sec\n", mapTime);
         } catch (StackOverflowError e) {
             printInfoOnStackOverflow(N, L);
         } catch (RuntimeException e) {
@@ -96,8 +98,8 @@ public class InsertRandomSpeedTest {
      */
     public static void timeRandomTreeMap(TreeMap<String, Integer> treeMap, int N, int L) {
         try {
-            double javaTime = insertRandom(treeMap, N, L);
-            System.out.printf("Java's Built-in TreeMap: %.2f sec\n", javaTime);
+            double mapTime = insertRandom(treeMap, N, L);
+            System.out.printf("Java's Built-in TreeMap: %.2f sec\n", mapTime);
         } catch (StackOverflowError e) {
             printInfoOnStackOverflow(N, L);
         } catch (RuntimeException e) {
@@ -112,8 +114,8 @@ public class InsertRandomSpeedTest {
      */
     public static void timeRandomHashMap(HashMap<String, Integer> hashMap, int N, int L) {
         try {
-            double javaTime = insertRandom(hashMap, N, L);
-            System.out.printf("Java's Built-in HashMap: %.2f sec\n", javaTime);
+            double mapTime = insertRandom(hashMap, N, L);
+            System.out.printf("Java's Built-in HashMap: %.2f sec\n", mapTime);
         } catch (StackOverflowError e) {
             printInfoOnStackOverflow(N, L);
         } catch (RuntimeException e) {

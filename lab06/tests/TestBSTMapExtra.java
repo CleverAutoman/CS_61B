@@ -1,9 +1,7 @@
 import java.util.Set;
 import java.util.TreeSet;
-
 import org.junit.Test;
-
-import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.*;
 
 /** Tests of optional parts of lab 7. */
 public class TestBSTMapExtra {
@@ -19,10 +17,10 @@ public class TestBSTMapExtra {
             b.put("hi" + i, 1);
             values.add("hi" + i);
         }
-        assertThat(b.size()).isEqualTo(455); //keys are there
+        assertEquals(455, b.size()); //keys are there
         Set<String> keySet = b.keySet();
-        assertThat(values).containsExactlyElementsIn(keySet).inOrder();
-        assertThat(keySet).containsExactlyElementsIn(values).inOrder();
+        assertTrue(values.containsAll(keySet) && keySet.containsAll(values));
+        assertTrue(keySet.containsAll(values) && values.containsAll(keySet));
     }
 
     /* Remove Test
@@ -45,14 +43,13 @@ public class TestBSTMapExtra {
         q.put("a", "a");
         q.put("d", "a");
         q.put("e", "a"); // a b c d e
-        assertThat(q.remove("c")).isEqualTo("a");
-        assertThat(q.containsKey("c")).isFalse();
-        assertThat(q.remove("c")).isNull();
-        assertThat(q.containsKey("a")).isTrue();
-        assertThat(q.containsKey("b")).isTrue();
-        assertThat(q.containsKey("d")).isTrue();
-        assertThat(q.containsKey("e")).isTrue();
-
+        assertEquals("a", q.remove("c"));
+        assertFalse(q.containsKey("c"));
+        assertNull(q.remove("c"));
+        assertTrue(q.containsKey("a"));
+        assertTrue(q.containsKey("b"));
+        assertTrue(q.containsKey("d"));
+        assertTrue(q.containsKey("e"));
     }
 
     /* Remove Test 2
@@ -66,20 +63,20 @@ public class TestBSTMapExtra {
         q.put("a","a");
         q.put("d","a");
         q.put("e","a");                         // a b c d e
-        assertThat(q.remove("e")).isNotNull();      // a b c d
-        assertThat(q.containsKey("a")).isTrue();
-        assertThat(q.containsKey("b")).isTrue();
-        assertThat(q.containsKey("c")).isTrue();
-        assertThat(q.containsKey("d")).isTrue();
-        assertThat(q.remove("c")).isNotNull();      // a b d
-        assertThat(q.containsKey("a")).isTrue();
-        assertThat(q.containsKey("b")).isTrue();
-        assertThat(q.containsKey("d")).isTrue();
+        assertNotNull(q.remove("e"));      // a b c d
+        assertTrue(q.containsKey("a"));
+        assertTrue(q.containsKey("b"));
+        assertTrue(q.containsKey("c"));
+        assertTrue(q.containsKey("d"));
+        assertNotNull(q.remove("c"));      // a b d
+        assertTrue(q.containsKey("a"));
+        assertTrue(q.containsKey("b"));
+        assertTrue(q.containsKey("d"));
         q.put("f","a");                         // a b d f
-        assertThat(q.remove("d")).isNotNull();      // a b f
-        assertThat(q.containsKey("a")).isTrue();
-        assertThat(q.containsKey("b")).isTrue();
-        assertThat(q.containsKey("f")).isTrue();
+        assertNotNull(q.remove("d"));      // a b f
+        assertTrue(q.containsKey("a"));
+        assertTrue(q.containsKey("b"));
+        assertTrue(q.containsKey("f"));
     }
 
     /* Remove Test 3
@@ -90,28 +87,42 @@ public class TestBSTMapExtra {
         BSTMap<Character, Integer> rightChild = new BSTMap<>();
         rightChild.put('A', 1);
         rightChild.put('B', 2);
-        assertThat(rightChild.remove('A')).isEqualTo(1);
+        assertEquals(Integer.valueOf(1), rightChild.remove('A'));
         for (int i = 0; i < 10; i++) {
             rightChild.put((char) ('C' + i), 3 + i);
         }
         rightChild.put('A', 100);
-        assertThat(rightChild.remove('D')).isEqualTo(4);
-        assertThat(rightChild.remove('G')).isEqualTo(7);
-        assertThat(rightChild.remove('A')).isEqualTo(100);
-        assertThat(rightChild.size()).isEqualTo(9);
+        assertEquals(Integer.valueOf(4), rightChild.remove('D'));
+        assertEquals(Integer.valueOf(7), rightChild.remove('G'));
+        assertEquals(Integer.valueOf(100), rightChild.remove('A'));
+        assertEquals(9, rightChild.size());
 
         BSTMap<Character, Integer> leftChild = new BSTMap<>();
         leftChild.put('B', 1);
         leftChild.put('A', 2);
-        assertThat(leftChild.remove('B')).isEqualTo(1);
-        assertThat(leftChild.size()).isEqualTo(1);
-        assertThat(leftChild.get('B')).isNull();
+        assertEquals(Integer.valueOf(1), leftChild.remove('B'));
+        assertEquals(1, leftChild.size());
+        assertNull(leftChild.get('B'));
 
         BSTMap<Character, Integer> noChild = new BSTMap<>();
         noChild.put('Z', 15);
-        assertThat(noChild.remove('Z')).isEqualTo(15);
-        assertThat(noChild.size()).isEqualTo(0);
-        assertThat(noChild.get('Z')).isNull();
+        assertEquals(Integer.valueOf(15), noChild.remove('Z'));
+        assertEquals(0, noChild.size());
+        assertNull(noChild.get('Z'));
     }
 
+    @Test
+    public void testParent() {
+        BSTMap<String,String> q = new BSTMap<>();
+        q.put("c","a");
+        q.put("b","a");
+        q.put("a","a");
+        q.put("d","a");
+        q.put("e","a");
+
+        String c = q.getParent("a");
+        assertEquals("b", c);
+        assertEquals("c", q.getParent("b"));
+        assertEquals("d", q.getParent("e"));
+    }
 }

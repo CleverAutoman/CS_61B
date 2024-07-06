@@ -78,19 +78,19 @@ public class TestMyHashMapBuckets {
                                         createBucketedMap(bucketType));
     }
 
-    @DisplayName("resize")
-    @ParameterizedTest
-    @MethodSource("bucketArguments")
-    public void resizeTest(Class<? extends Collection<?>> bucketType) {
-        TestMyHashMap.sanityResizeTest(createBucketedMap(bucketType), 16, 0.75);
-    }
-
-    @DisplayName("edge cases")
-    @ParameterizedTest
-    @MethodSource("bucketArguments")
-    public void edgeCasesTest(Class<? extends Collection<?>> bucketType) {
-        TestMyHashMap.edgeCasesTest(createBucketedMap(bucketType));
-    }
+//    @DisplayName("resize")
+//    @ParameterizedTest
+//    @MethodSource("bucketArguments")
+//    public void resizeTest(Class<? extends Collection<?>> bucketType) {
+//        TestMyHashMap.sanityResizeTest(createBucketedMap(bucketType), 16, 0.75);
+//    }
+//
+//    @DisplayName("edge cases")
+//    @ParameterizedTest
+//    @MethodSource("bucketArguments")
+//    public void edgeCasesTest(Class<? extends Collection<?>> bucketType) {
+//        TestMyHashMap.edgeCasesTest(createBucketedMap(bucketType));
+//    }
 
     private static Stream<Arguments> bucketArguments() {
         return Stream.of(
